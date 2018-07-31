@@ -1,7 +1,6 @@
 package ru.yandex.translate.api;
 
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import ru.yandex.translate.utils.TestUtils;
 
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.registerParser;
 
 public class DictionaryAPI extends API {
 
@@ -17,7 +15,7 @@ public class DictionaryAPI extends API {
     protected static final String LOOKUP_API_URL = DICTIONARY_URL + "/api/v1/dicservice.json/lookup";
     protected static final String DICT_API_KEY = "dict.1.1.20180718T152751Z.b148d97cf60bd06a.2a370f44d3c49000c6887d5aeb28a915485d162e";
 
-    public static Response getDictionaryResponseTranslation(String word, String wordLang, String neededLang){
+    public static JsonPath getDictionaryTranslation(String word, String wordLang, String neededLang){
         String key = word+"-DictionaryTranslation";
 
         RequestSpecification request = given()
@@ -26,10 +24,10 @@ public class DictionaryAPI extends API {
                 .queryParam("text", word)
                 .queryParam("flags", 103);
 
-        return getResponseCache(key, LOOKUP_API_URL, request);
+        return getJsonPathCache(key, LOOKUP_API_URL, request);
     }
 
-    public static Response getDictionaryResponseSynonyms(String word, String wordLang){
+    public static JsonPath getDictionarySynonyms(String word, String wordLang){
         String key = word+"-DictionarySynonyms";
 
         RequestSpecification request = given()
@@ -37,18 +35,7 @@ public class DictionaryAPI extends API {
                     .queryParam("lang", wordLang+ "-" +wordLang)
                     .queryParam("text", word);
 
-        return getResponseCache(key, LOOKUP_API_URL, request);
-    }
-
-
-    public  static JsonPath getDictionaryTranslation(String word, String wordLang, String neededLang){
-        Response lookupResponse = getDictionaryResponseTranslation(word, wordLang, neededLang);
-        return getJsonPath(lookupResponse);
-    }
-
-    public static JsonPath getDictionarySynonyms(String word, String wordLang){
-        Response lookupResponse2 = getDictionaryResponseSynonyms(word,wordLang);
-        return getJsonPath(lookupResponse2);
+        return getJsonPathCache(key, LOOKUP_API_URL, request);
     }
 
     public static String lookupTextForTranslation(String word, String wordlang, String neededLang){

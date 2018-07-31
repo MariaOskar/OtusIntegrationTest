@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class API {
 
-    static Map<String,Response> cache = new HashMap<>();
+    static Map<String,JsonPath> cache = new HashMap<>();
 
     public static final String URL = "https://translate.yandex.ru";
 
@@ -19,11 +19,11 @@ public class API {
         return response.then().extract().body().jsonPath();
     }
 
-    public static Response getResponseCache(String key, String url, RequestSpecification request){
+    public static JsonPath getJsonPathCache(String key, String url, RequestSpecification request){
         if(cache.containsKey(key)){
             return cache.get(key);
         } else {
-            cache.put(key, request.get(url));
+            cache.put(key, getJsonPath(request.get(url)));
             return cache.get(key);
         }
     }

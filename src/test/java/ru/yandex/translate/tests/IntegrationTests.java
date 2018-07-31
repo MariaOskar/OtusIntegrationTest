@@ -2,7 +2,7 @@ package ru.yandex.translate.tests;
 
 import com.codeborne.selenide.Configuration;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.translate.pages.TranslatorPage;
 import ru.yandex.translate.api.DictionaryAPI;
@@ -16,8 +16,8 @@ public class IntegrationTests {
     public static final String NEEDED_LANG = "en";
     public static TranslatorPage page;
 
-    @BeforeAll
-    public static void beforeTests(){
+    @BeforeEach
+    public void beforeTests(){
         Configuration.browser = "chrome";
         WebDriverManager.chromedriver().setup();
         page = TranslatorPage.enter(WORD,WORD_LANG,NEEDED_LANG);
